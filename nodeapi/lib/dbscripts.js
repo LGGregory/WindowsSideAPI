@@ -4,7 +4,7 @@ const squel = require('squel');
 const bcrypt = require('bcrypt');
 
 exports.createUser = async function (pool, user_email, password, fullname) {
-    const hash = await bcrypt.hash(password, saltRounds);
+    bcrypt.hash(password, 12).then( async (err,hash)=>{
     const cP = squel.insert()
         .into("accounts")
         .set("full_name", fullname)
@@ -32,6 +32,7 @@ exports.createUser = async function (pool, user_email, password, fullname) {
     }
     connection.release();
     return true;
+});
 }
 
 exports.checkUser = async function (pool, user_email, password) {
@@ -169,7 +170,6 @@ exports.getUsages = async function (pool, email, computer_name) {
     data.forEach((usage)=>{
         usage.value = (usage.value === 1);
     })
-    console.log(data);
     return data;
 }
 

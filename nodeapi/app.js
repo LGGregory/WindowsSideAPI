@@ -40,6 +40,11 @@ const pool = mysql.createPool(
 
 var sockets = {};
 
+
+app.get('/download/newest', (req,res)=>{
+  res.sendFile('WindowsSide0.8.zip');
+});
+
 // Express API
 app.post('/api/user/create', (req, res) => {
     var data = req.body;
@@ -93,7 +98,6 @@ app.post("/api/uses/update", async (req, res) => {
     var options = req.body;
     if(typeof options.usages == 'string')
         options.usages = JSON.parse(options.usages);
-    console.log(options);
     const ret = await db.updateUsages(pool, options);
     if(!ret) res.status(400).send();
     res.status(201).send();
